@@ -1,19 +1,19 @@
 {
     "sourceMaps": "inline",
     "presets": [
-        [
-            "env",
-            {
-                "targets": {
-                    "node": 6
-                },
-                "useBuiltIns": true
-            }
-        ],
-        "es2015"
+        "react-app"
     ],
     "plugins": [
-        "transform-flow-strip-types"
+        "transform-flow-strip-types",
+        [
+            "react-css-modules",
+            {
+                "filetypes": {
+                    ".scss": "postcss-scss"
+                },
+                "generateScopedName": "[hash:base64]"
+            }
+        ]
     ],
     "env": {
         "test": {

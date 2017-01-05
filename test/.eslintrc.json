@@ -1,8 +1,15 @@
 {
+  "env": {},
   "plugins": [
     "ava"
   ],
-  "extends": "plugin:ava/recommended",
+  "extends": [
+    "plugin:ava/recommended"
+  ],
+  "parserOptions": {},
+  "rules": {
+    "react/jsx-filename-extension": "off"
+  },
   "settings": {
     "import/resolver": {
       "node": {

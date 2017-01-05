@@ -3,7 +3,17 @@
 
 <PROJECT_ROOT>/node_modules/.*/node_modules/.*
 
-<PROJECT_ROOT>/lib/.*
+<PROJECT_ROOT>/\.git/.*
+
+<PROJECT_ROOT>/node_modules/.*/node_modules/.*
+<PROJECT_ROOT>/node_modules/caniuse-db/.*
+<PROJECT_ROOT>/node_modules/fbjs/.*
+<PROJECT_ROOT>/node_modules/eslint.*
+<PROJECT_ROOT>/node_modules/babel.*
+<PROJECT_ROOT>/node_modules/postcss.*
+<PROJECT_ROOT>/node_modules/serve-index/.*
+
+<PROJECT_ROOT>/dist/.*
 <PROJECT_ROOT>/\.git/.*
 
 [include]
@@ -13,3 +23,8 @@
 [options]
 module.ignore_non_literal_requires=true
 
+# for testcode
+module.system.node.resolve_dirname=src
+module.system.node.resolve_dirname=node_modules
+
+module.name_mapper='.*\.scss' -> 'css-module-flow'

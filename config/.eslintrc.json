@@ -1,0 +1,13 @@
+{
+  "parserOptions": {
+    "sourceType": "script"
+  },
+  "env": {
+    "node": true,
+    "es6": false
+  },
+  "rules": {
+    "security/detect-object-injection": "off",
+    "security/detect-unsafe-regex": "off"
+  }
+}
