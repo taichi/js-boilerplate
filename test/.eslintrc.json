@@ -1,0 +1,15 @@
+{
+  "plugins": [
+    "ava"
+  ],
+  "extends": "plugin:ava/recommended",
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": [
+          "src"
+        ]
+      }
+    }
+  }
+}

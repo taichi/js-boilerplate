@@ -1,9 +1,13 @@
-# Modern JavaScript
+| [JavaScript](https://github.com/taichi/js-boilerplate/tree/master) | [React](https://github.com/taichi/js-boilerplate/tree/frontend) | [Electron](https://github.com/taichi/js-boilerplate/tree/electron) |
+|------------|-------|----------|
+
+# Modern JavaScript Application Boilerplate
 
 # Quick Setup
 
 ```
-npm -g yarn flow-bin
+npm install -g yarn flow-bin flow-typed
+
 yarn install
 yarn build
 ```
@@ -29,16 +33,19 @@ yarn build
   * [babel-eslint](https://github.com/babel/babel-eslint)
   * [babel-preset-env](https://github.com/babel/babel-preset-env)
   * [babel-plugin-transform-flow-strip-types](https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-flow-strip-types)
+  * [babel-register](https://github.com/babel/babel/tree/master/packages/babel-register)
 * [ESLint](http://eslint.org/)
   * [eslint-plugin-ava](https://github.com/avajs/eslint-plugin-ava)
   * [eslint-plugin-import](https://github.com/benmosher/eslint-plugin-import)
+  * [eslint-import-resolver-node](https://github.com/benmosher/eslint-plugin-import/tree/master/resolvers/node)
   * [eslint-plugin-promise](https://github.com/xjamundx/eslint-plugin-promise)
   * [eslint-plugin-security](https://github.com/nodesecurity/eslint-plugin-security)
   * [eslint-plugin-flowtype](https://github.com/gajus/eslint-plugin-flowtype)
-  * [eslint-import-resolver-node](https://github.com/benmosher/eslint-plugin-import)
 * [Flow](https://flowtype.org/)
+  * [flow-typed](https://github.com/flowtype/flow-typed)
 
 # Testing
 
 * [ava](https://github.com/avajs/ava)
+* [testdouble.js](https://github.com/testdouble/testdouble.js)
 * [nyc](https://github.com/istanbuljs/nyc)

@@ -1,0 +1,8 @@
+{
+	"recommendations": [
+		"dbaeumer.vscode-eslint",
+		"michelemelluso.gitignore",
+		"EditorConfig.EditorConfig",
+		"flowtype.flow-for-vscode"
+	]
+}

@@ -1,0 +1,16 @@
+install:
+  - ps: Install-Product node 6.9
+  - npm install -g  flow-bin flow-typed
+  - yarn install
+
+before_build:
+  - yarn lint
+
+build_script:
+  - yarn compile
+
+test_script:
+  - yarn cover
+
+cache:
+ - "%LOCALAPPDATA%\\Yarn"
