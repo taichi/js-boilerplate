@@ -17,7 +17,17 @@
     ],
     "env": {
         "test": {
-            "plugins": []
+            "plugins": [
+                [
+                    "module-resolver",
+                    {
+                        "root": [
+                            "./src",
+                            "./app"
+                        ]
+                    }
+                ]
+            ]
         }
     }
 }

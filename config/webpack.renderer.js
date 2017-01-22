@@ -86,8 +86,7 @@ var dev = {
     historyApiFallback: true,
     stats: {
       colors: true
-    },
-    open: true
+    }
   },
   postcss: function () {
     return [

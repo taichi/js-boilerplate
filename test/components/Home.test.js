@@ -1,5 +1,9 @@
 // @flow
 import test from "ava";
+
+import "ignore-styles";
+import "../global.setup";
+
 import React from "react";
 import { shallow, mount } from "enzyme";
 

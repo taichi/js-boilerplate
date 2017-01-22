@@ -1,31 +1,45 @@
 {
   "name": "js-boilerplate",
   "version": "0.0.1",
-  "description": "react application boilerplate",
+  "description": "Electron application boilerplate",
   "author": "taichi",
   "license": "MIT",
   "homepage": "https://github.com/taichi/js-boilerplate",
   "private": true,
   "scripts": {
     "build": "run-s lint compile test",
-    "clear": "rimraf dist coverage .nyc_output",
+    "clear": "rimraf dist release coverage .nyc_output",
     "lint": "eslint src/ test/",
-    "compile": "cross-env NODE_ENV=production webpack --progress --profile --config config/webpack.js",
-    "test": "cross-env NODE_ENV=test NODE_PATH=src ava --verbose",
-    "cover": "nyc --reporter=html --reporter=text yarn test",
-    "start": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.js",
-    "watch": "chokidar test/**/*.js -c \"cross-env NODE_ENV=test NODE_PATH=src ava --tap {path} | tap-notify\"",
+    "compile": "run-p compile:*",
+    "compile:main": "cross-env NODE_ENV=production webpack --profile --config config/webpack.main.js",
+    "compile:renderer": "cross-env NODE_ENV=production webpack --profile --config config/webpack.renderer.js",
+    "run:main": "cross-env NODE_ENV=production electron dist/main.js",
+    "package": "yarn compile && build --dir",
+    "package:win": "yarn build && build --win --x64",
+    "package:linux": "yarn build && build --linux",
+    "package:mac": "yarn build && build --mac",
+    "test": "run-s test:renderer test:main",
+    "test:main": "cross-env NODE_ENV=test ava app-test/**/*.test.js -S {app,src}/**/*.{js,jsx} --verbose",
+    "test:renderer": "cross-env NODE_ENV=test ava --verbose",
+    "cover": "nyc --reporter=html --reporter=text yarn test:renderer",
+    "start": "run-p start:*",
+    "start:main": "cross-env NODE_ENV=development electron -r babel-register -r babel-polyfill ./app/main.development",
+    "start:renderer": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.renderer.js",
+    "watch": "chokidar test/**/*.js -c \"cross-env NODE_ENV=test ava --tap {path} | tap-notify\"",
     "postinstall": "flow-typed install"
   },
   "dependencies": {
+    "babel-polyfill": "^6.20.0",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-redux": "^5.0.1",
     "react-router": "^3.0.0",
     "react-router-redux": "^4.0.7",
     "redux": "^3.6.0",
+    "redux-electron-ipc": "^1.1.6",
     "redux-observable": "^0.12.2",
-    "rxjs": "^5.0.2"
+    "rxjs": "^5.0.2",
+    "source-map-support": "^0.4.9"
   },
   "devDependencies": {
     "autoprefixer": "^6.6.0",
@@ -33,6 +47,7 @@
     "babel-core": "^6.21.0",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.10",
+    "babel-plugin-module-resolver": "^2.4.0",
     "babel-plugin-react-css-modules": "^2.2.0",
     "babel-plugin-transform-flow-strip-types": "^6.21.0",
     "babel-preset-env": "^1.1.4",
@@ -44,6 +59,11 @@
     "css-loader": "^0.26.1",
     "css-module-flow": "^1.0.0",
     "cssnano": "^3.9.1",
+    "devtron": "^1.4.0",
+    "electron": "^1.4.14",
+    "electron-builder": "^11.3.0",
+    "electron-debug": "^1.1.0",
+    "electron-devtools-installer": "^2.0.1",
     "enzyme": "^2.7.0",
     "eslint": "^3.12.2",
     "eslint-import-resolver-node": "^0.3.0",
@@ -74,6 +94,7 @@
     "redux-logger": "^2.7.4",
     "resolve-url-loader": "^1.6.1",
     "rimraf": "^2.5.4",
+    "spectron": "^3.4.1",
     "style-loader": "^0.13.1",
     "tap-notify": "^1.0.0",
     "testdouble": "^1.10.2",
@@ -83,15 +104,41 @@
     "webpack-merge": "^2.0.0",
     "webpack-validator": "^2.3.0"
   },
+  "main": "dist/main.js",
+  "build": {
+    "appId": "awesome.app",
+    "productName": "MyAwesomeApp",
+    "mac": {
+      "category": "your.app.category.type"
+    },
+    "win": {
+      "iconUrl": "(windows-only) https link to icon",
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "AppImage",
+        "tar.gz"
+      ]
+    },
+    "files": [
+      "dist/",
+      "package.json"
+    ]
+  },
+  "directories": {
+    "buildResources": "build",
+    "output": "release"
+  },
   "ava": {
     "files": "test/**/*.test.js",
-    "source": "src/**/*.{js,jsx}",
+    "source": "{app,src}/**/*.{js,jsx}",
     "babel": "inherit",
-    "require": [
-      "babel-register",
-      "ignore-styles",
-      "./test/global.setup.js"
-    ]
+    "require": "babel-register"
   },
   "repository": {
     "type": "git",
