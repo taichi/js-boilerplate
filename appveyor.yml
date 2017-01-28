@@ -2,7 +2,7 @@ os: unstable
 
 install:
   - ps: Install-Product node 6.9
-  - npm install -g flow-bin flow-typed
+  - npm install -g flow-typed
   - yarn install
 
 before_build:
