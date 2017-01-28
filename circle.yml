@@ -13,6 +13,7 @@ dependencies:
     - ci-yarn-upgrade --verbose
   cache_directories:
     - ~/.cache/yarn
+    - ~/.flow-typed
 
 test:
   override:
