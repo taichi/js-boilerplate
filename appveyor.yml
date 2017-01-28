@@ -1,6 +1,6 @@
 install:
   - ps: Install-Product node 6.9
-  - npm install -g  flow-bin flow-typed
+  - npm install -g flow-bin flow-typed
   - yarn install
 
 before_build:
@@ -12,5 +12,10 @@ build_script:
 test_script:
   - yarn cover
 
+artifacts:
+  - path: coverage
+    name: appveyor-test-coverage
+
 cache:
  - "%LOCALAPPDATA%\\Yarn"
+ - "%USERPROFILE%\\.flow-typed"
