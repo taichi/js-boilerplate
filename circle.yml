@@ -4,7 +4,7 @@ machine:
 
 dependencies:
   pre:
-    - yarn global add flow-bin flow-typed ci-yarn-upgrade
+    - yarn global add flow-typed ci-yarn-upgrade
   override:
     - yarn install
     - yarn lint
