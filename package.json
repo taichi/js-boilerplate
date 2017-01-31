@@ -15,7 +15,7 @@
     "cover": "nyc --reporter=html --reporter=text yarn test",
     "watch": "run-p watch:*",
     "watch:src": "babel src --out-dir lib --watch --source-maps inline",
-    "watch:test": "cross-env NODE_ENV=development ava --watch",
+    "watch:test": "cross-env NODE_PATH=src NODE_ENV=development ava --watch",
     "postinstall": "flow-typed install"
   },
   "devDependencies": {
