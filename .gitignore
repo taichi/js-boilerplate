@@ -22,3 +22,4 @@ flow-typed/npm
 dist
 build
 release
+lib
