@@ -9,8 +9,7 @@
                 },
                 "useBuiltIns": true
             }
-        ],
-        "es2015"
+        ]
     ],
     "plugins": [
         "transform-flow-strip-types"
