@@ -61,8 +61,8 @@
     "css-module-flow": "^1.0.0",
     "cssnano": "^3.9.1",
     "devtron": "^1.4.0",
-    "electron": "^1.4.14",
-    "electron-builder": "^11.3.0",
+    "electron": "^1.4.15",
+    "electron-builder": "^13.6.0",
     "electron-debug": "^1.1.0",
     "electron-devtools-installer": "^2.0.1",
     "enzyme": "^2.7.0",
@@ -126,14 +126,14 @@
         "tar.gz"
       ]
     },
+    "directories": {
+      "buildResources": "build",
+      "output": "release"
+    },
     "files": [
       "dist/",
       "package.json"
     ]
-  },
-  "directories": {
-    "buildResources": "build",
-    "output": "release"
   },
   "ava": {
     "files": "test/**/*.test.js",
