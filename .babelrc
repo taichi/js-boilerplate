@@ -1,10 +1,10 @@
 {
     "sourceMaps": "inline",
     "presets": [
+        "flow",
         "react-app"
     ],
     "plugins": [
-        "transform-flow-strip-types",
         [
             "react-css-modules",
             {
