@@ -1,6 +1,7 @@
 {
     "sourceMaps": "inline",
     "presets": [
+        "flow",
         [
             "env",
             {
@@ -11,9 +12,7 @@
             }
         ]
     ],
-    "plugins": [
-        "transform-flow-strip-types"
-    ],
+    "plugins": [],
     "env": {
         "test": {
             "plugins": []
