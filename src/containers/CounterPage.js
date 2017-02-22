@@ -4,7 +4,10 @@ import { connect } from "react-redux";
 import Counter from "../components/Counter";
 import * as CounterActions from "../actions/counter";
 
-function mapStateToProps(state) {
+import type { CounterProps } from "../components/Counter";
+import type { State } from "../States";
+
+function mapStateToProps(state: State): CounterProps {
   return {
     counter: state.counter
   };

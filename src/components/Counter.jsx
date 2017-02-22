@@ -1,17 +1,29 @@
 // @flow
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router";
 import "./Counter.scss";
 import js from "./Counter.json";
 
-export default class Counter extends Component {
-  props: {
-    incrementCounter: () => void,
-    incrementIfOdd: () => void,
-    incrementAsync: () => void,
-    decrementCounter: () => void,
-    counter: number
-  };
+import type { State } from "../States";
+
+export type CounterProps = {
+  incrementCounter: () => void,
+  incrementIfOdd: () => void,
+  incrementAsync: () => void,
+  decrementCounter: () => void,
+  counter: number
+};
+
+export default class Counter extends React.Component<void, CounterProps, State> {
+
+  state: State;
+
+  constructor(props: CounterProps) {
+    super(props);
+    this.state = {
+      counter: 0
+    };
+  }
 
   render() {
     const { incrementCounter, incrementIfOdd, incrementAsync, decrementCounter, counter } = this.props;
