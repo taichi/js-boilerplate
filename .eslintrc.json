@@ -17,7 +17,8 @@
     "promise",
     "security",
     "react",
-    "jsx-a11y"
+    "jsx-a11y",
+    "prettier"
   ],
   "extends": [
     "eslint:recommended",
@@ -25,13 +26,19 @@
     "plugin:flowtype/recommended",
     "plugin:react/recommended",
     "plugin:jsx-a11y/recommended",
-    "plugin:import/react"
+    "plugin:import/react",
+    "prettier",
+    "prettier/flowtype",
+    "prettier/react"
   ],
   "rules": {
-    "semi": "error",
-    "quotes": "error",
-    "comma-dangle": "error",
     "import/no-extraneous-dependencies": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "trailingComma": "none"
+      }
+    ],
     "react/jsx-no-bind": "off",
     "react/jsx-filename-extension": "error",
     "react/prefer-stateless-function": "off",
