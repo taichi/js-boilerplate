@@ -47,6 +47,9 @@ yarn start
   * [eslint-plugin-jsx-a11y](https://github.com/evcohen/eslint-plugin-jsx-a11y)
 * [Flow](https://flowtype.org/)
   * [flow-typed](https://github.com/flowtype/flow-typed)
+* [Prettier](https://github.com/prettier/prettier)
+  * [eslint-plugin-prettier](https://github.com/not-an-aardvark/eslint-plugin-prettier)
+  * [eslint-config-prettier](https://github.com/lydell/eslint-config-prettier)
 
 # Testing
 
