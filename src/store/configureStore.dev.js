@@ -23,13 +23,19 @@ const logger = createLogger({
   collapsed: true
 });
 
-let middlewares = applyMiddleware(epicMiddleware, routerMiddleware(hashHistory), logger);
+let middlewares = applyMiddleware(
+  epicMiddleware,
+  routerMiddleware(hashHistory),
+  logger
+);
 let composeEnhancers = composeWithDevTools({ actionCreators });
 
 export default function configureStore(initialState: Object | void) {
-  const store = createStore(rootReducer,
+  const store = createStore(
+    rootReducer,
     initialState,
-    composeEnhancers(middlewares));
+    composeEnhancers(middlewares)
+  );
 
   if (module.hot) {
     module.hot.accept("../epics", () => {

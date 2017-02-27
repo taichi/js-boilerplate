@@ -4,7 +4,9 @@ import createAction from "utils/createAction";
 import td from "testdouble";
 
 test("make simple action", t => {
-  t.deepEqual(createAction("INCREMENT_COUNTER")(), { type: "INCREMENT_COUNTER" });
+  t.deepEqual(createAction("INCREMENT_COUNTER")(), {
+    type: "INCREMENT_COUNTER"
+  });
 });
 
 test("with payloadCreator", t => {

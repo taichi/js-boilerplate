@@ -11,7 +11,7 @@ import Home from "components/Home";
 
 test("shallow", t => {
   const wrapper = shallow(<Home />);
-  t.is(wrapper.contains(<i className="fa fa-spinner fa-spin"></i>), true);
+  t.is(wrapper.contains(<i className="fa fa-spinner fa-spin" />), true);
 });
 
 test("mount", t => {
