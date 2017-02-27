@@ -10,17 +10,23 @@
     "flowtype",
     "import",
     "promise",
-    "security"
+    "security",
+    "prettier"
   ],
   "extends": [
     "eslint:recommended",
     "plugin:import/recommended",
-    "plugin:flowtype/recommended"
+    "plugin:flowtype/recommended",
+    "prettier",
+    "prettier/flowtype"
   ],
   "rules": {
-    "semi": "error",
-    "quotes": "error",
-    "comma-dangle": "error",
-    "import/no-extraneous-dependencies": "off"
+    "import/no-extraneous-dependencies": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "trailingComma": "none"
+      }
+    ]
   }
 }
