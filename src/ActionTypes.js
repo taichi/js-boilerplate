@@ -9,4 +9,8 @@ export type IncrementIfOdd = { type: "INCREMENT_IF_ODD" };
 export type IncrementAsync = { type: "INCREMENT_ASYNC", payload: number };
 export type DecrementCounter = { type: "DECREMENT_COUNTER" };
 
-export type Action = IncrementCounter | IncrementIfOdd | IncrementAsync | DecrementCounter;
+export type Action =
+  | IncrementCounter
+  | IncrementIfOdd
+  | IncrementAsync
+  | DecrementCounter;
