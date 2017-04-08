@@ -1,0 +1,43 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/tmp
+    docker:
+      - image: ubuntu:16.04
+    steps:
+      - run: apt-get update && apt-get install -y git curl apt-transport-https
+      - run:
+          name: install runtime
+          command: |
+            curl -sL https://deb.nodesource.com/setup_6.x | bash -
+            curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+            echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+            apt-get update && apt-get install -y build-essential nodejs yarn
+      - run:
+          name: show versions
+          command: |
+            git --version
+            node --version
+            yarn --version
+      - run: yarn global add flow-typed ci-yarn-upgrade
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+      - run: yarn install
+      - run: yarn lint
+      - run: yarn compile
+      - run: ci-yarn-upgrade --verbose
+      - run: yarn cover
+      - store_test_results:
+          path: coverage/
+      - save_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+            - ~/.flow-typed
+      - run:
+          name: upgrade and make PR
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" -a -n "${YARN_UPGRADE}" ]; then
+              ci-yarn-upgrade --execute --verbose;
+            fi
