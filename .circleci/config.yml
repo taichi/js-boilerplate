@@ -1,28 +1,13 @@
-version: 2
 jobs:
   build:
-    working_directory: ~/tmp
+    working_directory: /project
     docker:
-      - image: ubuntu:16.04
+      - image: taichi/js-boilerplate
     steps:
-      - run: apt-get update && apt-get install -y git curl apt-transport-https
-      - run:
-          name: install runtime
-          command: |
-            curl -sL https://deb.nodesource.com/setup_6.x | bash -
-            curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-            echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-            apt-get update && apt-get install -y build-essential nodejs yarn
-      - run:
-          name: show versions
-          command: |
-            git --version
-            node --version
-            yarn --version
-      - run: yarn global add flow-typed ci-yarn-upgrade
       - checkout
       - restore_cache:
-          key: dependency-cache-{{ checksum "yarn.lock" }}
+          key: dependency-{{ .Environment.CACHE_KEY }}-{{ checksum "yarn.lock" }}
+      - run: yarn global add flow-typed ci-yarn-upgrade
       - run: yarn install
       - run: yarn lint
       - run: yarn compile
@@ -31,7 +16,7 @@ jobs:
       - store_test_results:
           path: coverage/
       - save_cache:
-          key: dependency-cache-{{ checksum "yarn.lock" }}
+          key: dependency-{{ .Environment.CACHE_KEY }}-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
             - ~/.flow-typed
