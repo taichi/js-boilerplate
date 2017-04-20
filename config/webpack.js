@@ -2,7 +2,6 @@ var env = process.env.NODE_ENV;
 var pkg = require("../package.json");
 
 var webpack = require("webpack");
-var validate = require("webpack-validator");
 var merge = require("webpack-merge");
 
 var path = require("path");
@@ -132,9 +131,7 @@ var prd = {
   }
 };
 
-module.exports = validate(
-  {
-    development: merge(dev, base),
-    production: merge(base, prd)
-  }[env]
-);
+module.exports = {
+  development: merge(dev, base),
+  production: merge(base, prd)
+}[env];
