@@ -21,30 +21,38 @@ var base = {
     filename: "bundle.js"
   },
   module: {
-    loaders: [{
-      test: /\.jsx?$/,
-      loader: "babel-loader",
-      exclude: /node_modules/
-    }, {
-      test: /\.json$/,
-      loader: "json-loader"
-    }, {
-      test: /\.css$/,
-      include: /node_modules|\.global\./,
-      loader: ExtractTextPlugin.extract("style-loader", "css-loader")
-    }, {
-      test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/,
-      loader: "url-loader?limit=10000&mimetype=application/font-woff"
-    }, {
-      test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-      loader: "url-loader?limit=10000&mimetype=application/octet-stream"
-    }, {
-      test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-      loader: "file-loader"
-    }, {
-      test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-      loader: "url-loader?limit=10000&mimetype=image/svg+xml"
-    }]
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        loader: "babel-loader",
+        exclude: /node_modules/
+      },
+      {
+        test: /\.json$/,
+        loader: "json-loader"
+      },
+      {
+        test: /\.css$/,
+        include: /node_modules|\.global\./,
+        loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+      },
+      {
+        test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url-loader?limit=10000&mimetype=application/font-woff"
+      },
+      {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url-loader?limit=10000&mimetype=application/octet-stream"
+      },
+      {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "file-loader"
+      },
+      {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url-loader?limit=10000&mimetype=image/svg+xml"
+      }
+    ]
   },
   resolve: {
     extensions: ["", ".js", ".jsx"]
@@ -62,24 +70,22 @@ var base = {
 var dev = {
   debug: true,
   devtool: "inline-source-map",
-  entry: [
-    "react-hot-loader/patch"
-  ],
+  entry: ["react-hot-loader/patch"],
   module: {
-    loaders: [{
-      test: /\.scss$/,
-      exclude: /node_modules/,
-      loaders: [
-        "style-loader?sourceMap",
-        "css-loader?modules&importLoaders=1",
-        "resolve-url-loader",
-        "postcss-loader?syntax=postcss-scss"
-      ]
-    }]
+    loaders: [
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        loaders: [
+          "style-loader?sourceMap",
+          "css-loader?modules&importLoaders=1",
+          "resolve-url-loader",
+          "postcss-loader?syntax=postcss-scss"
+        ]
+      }
+    ]
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ],
+  plugins: [new webpack.HotModuleReplacementPlugin()],
   devServer: {
     hot: true,
     inline: true,
@@ -89,26 +95,25 @@ var dev = {
     },
     open: true
   },
-  postcss: function () {
-    return [
-      require("precss"),
-      require("autoprefixer")
-    ];
+  postcss: function() {
+    return [require("precss"), require("autoprefixer")];
   }
 };
 
 var prd = {
   module: {
-    loaders: [{
-      test: /\.scss$/,
-      exclude: /node_modules/,
-      loaders: [
-        "style-loader",
-        "css-loader?modules&importLoaders=1",
-        "resolve-url-loader",
-        "postcss-loader?syntax=postcss-scss"
-      ]
-    }]
+    loaders: [
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        loaders: [
+          "style-loader",
+          "css-loader?modules&importLoaders=1",
+          "resolve-url-loader",
+          "postcss-loader?syntax=postcss-scss"
+        ]
+      }
+    ]
   },
   plugins: [
     new webpack.optimize.DedupePlugin(),
@@ -122,16 +127,14 @@ var prd = {
       }
     })
   ],
-  postcss: function () {
-    return [
-      require("precss"),
-      require("autoprefixer"),
-      require("cssnano")
-    ];
+  postcss: function() {
+    return [require("precss"), require("autoprefixer"), require("cssnano")];
   }
 };
 
-module.exports = validate({
-  development: merge(dev, base),
-  production: merge(base, prd)
-}[env]);
+module.exports = validate(
+  {
+    development: merge(dev, base),
+    production: merge(base, prd)
+  }[env]
+);

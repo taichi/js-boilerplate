@@ -14,8 +14,8 @@ export type CounterProps = {
   counter: number
 };
 
-export default class Counter extends React.Component<void, CounterProps, State> {
-
+export default class Counter
+  extends React.Component<void, CounterProps, State> {
   state: State;
 
   constructor(props: CounterProps) {
@@ -26,7 +26,13 @@ export default class Counter extends React.Component<void, CounterProps, State> 
   }
 
   render() {
-    const { incrementCounter, incrementIfOdd, incrementAsync, decrementCounter, counter } = this.props;
+    const {
+      incrementCounter,
+      incrementIfOdd,
+      incrementAsync,
+      decrementCounter,
+      counter
+    } = this.props;
     return (
       <div>
         <div styleName="backButton">
@@ -45,7 +51,9 @@ export default class Counter extends React.Component<void, CounterProps, State> 
             <i className="fa fa-minus" />
           </button>
           <button styleName="btn" onClick={incrementIfOdd}>odd</button>
-          <button styleName="btn" onClick={() => incrementAsync()}>async</button>
+          <button styleName="btn" onClick={() => incrementAsync()}>
+            async
+          </button>
         </div>
       </div>
     );

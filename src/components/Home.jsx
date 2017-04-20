@@ -8,7 +8,7 @@ export default class Home extends Component {
     return (
       <div>
         <div styleName="container">
-          <h2><i className="fa fa-spinner fa-spin"></i>Home</h2>
+          <h2><i className="fa fa-spinner fa-spin" />Home</h2>
           <Link to="/counter">to Counter</Link>
         </div>
       </div>
