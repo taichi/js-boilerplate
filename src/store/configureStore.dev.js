@@ -4,7 +4,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { createEpicMiddleware } from "redux-observable";
 import { hashHistory } from "react-router";
 import { routerMiddleware, push } from "react-router-redux";
-import createLogger from "redux-logger";
+import { createLogger } from "redux-logger";
 
 import rootEpic from "../epics";
 import rootReducer from "../reducers";
