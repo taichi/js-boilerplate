@@ -77,12 +77,10 @@ yarn start
     * Sass Like markup
 * [Redux](http://redux.js.org/)
   * [redux-observable](https://redux-observable.js.org/)
-  * [RxJS 5](https://github.com/Reactive-Extensions/RxJS)
+  * [RxJS 5](https://github.com/ReactiveX/rxjs)
 * [Webpack](https://webpack.js.org/)
   * [webpack-dev-server](https://webpack.github.io/docs/webpack-dev-server.html)
   * [webpack-merge](https://github.com/survivejs/webpack-merge)
-  * [webpack-validator](https://github.com/js-dxtools/webpack-validator)
-    * needless for webpack2
   * [cssnano](http://cssnano.co/)
     * css minifier
 * [Font Awesome](http://fontawesome.io/)
