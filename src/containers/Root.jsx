@@ -9,7 +9,7 @@ import routes from "./routes";
 class Root extends Component {
   props: {
     store: Object
-  }
+  };
   render() {
     const { store } = this.props;
     const history = syncHistoryWithStore(hashHistory, store);

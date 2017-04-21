@@ -14,8 +14,9 @@ const store = configureStore();
 ReactDOM.render(
   <AppContainer>
     <Root store={store} />
-  </AppContainer>
-  , appNode);
+  </AppContainer>,
+  appNode
+);
 
 if (module.hot) {
   module.hot.accept("./containers/Root", () => {
@@ -23,7 +24,8 @@ if (module.hot) {
     ReactDOM.render(
       <AppContainer>
         <NewRoot store={store} />
-      </AppContainer>
-      , appNode);
+      </AppContainer>,
+      appNode
+    );
   });
 }
