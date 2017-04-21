@@ -16,7 +16,6 @@ function localIdent(loaderContext, localIdentName, localName) {
 }
 
 var base = {
-  context: path.join(__dirname, ".."),
   entry: [
     "font-awesome/css/font-awesome.css",
     "./src/app.global.css",
@@ -99,6 +98,7 @@ var dev = {
               getLocalIdent: localIdent
             }
           },
+          "resolve-url-loader",
           {
             loader: "postcss-loader",
             options: {
@@ -112,17 +112,7 @@ var dev = {
       }
     ]
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.LoaderOptionsPlugin({
-      options: {
-        debug: true,
-        output: {
-          path: path.resolve(__dirname, "../dist")
-        }
-      }
-    })
-  ],
+  plugins: [new webpack.HotModuleReplacementPlugin()],
   devServer: {
     hot: true,
     inline: true,
@@ -150,6 +140,7 @@ var prd = {
               getLocalIdent: localIdent
             }
           },
+          "resolve-url-loader",
           {
             loader: "postcss-loader",
             options: {
@@ -168,13 +159,6 @@ var prd = {
     ]
   },
   plugins: [
-    new webpack.LoaderOptionsPlugin({
-      options: {
-        output: {
-          path: path.resolve(__dirname, "../dist")
-        }
-      }
-    }),
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: true,
       compress: {
