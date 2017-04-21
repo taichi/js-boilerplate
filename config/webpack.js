@@ -7,6 +7,13 @@ var merge = require("webpack-merge");
 var path = require("path");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var genericNames = require("generic-names");
+function localIdent(loaderContext, localIdentName, localName) {
+  var fn = genericNames("[hash:base64]", {
+    context: loaderContext
+  });
+  return fn(localName, loaderContext.resourcePath);
+}
 
 var base = {
   context: path.join(__dirname, ".."),
@@ -16,24 +23,23 @@ var base = {
     "./src/index." + env
   ],
   output: {
-    path: "dist/",
+    path: path.resolve(__dirname, "../dist"),
     filename: "bundle.js"
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         loader: "babel-loader",
         exclude: /node_modules/
       },
       {
-        test: /\.json$/,
-        loader: "json-loader"
-      },
-      {
         test: /\.css$/,
         include: /node_modules|\.global\./,
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: "css-loader"
+        })
       },
       {
         test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/,
@@ -54,37 +60,69 @@ var base = {
     ]
   },
   resolve: {
-    extensions: ["", ".js", ".jsx"]
+    extensions: [".js", ".jsx"]
   },
   plugins: [
     new HtmlWebpackPlugin({ title: pkg.name }),
-    new ExtractTextPlugin("bundle.css"),
+    new ExtractTextPlugin({
+      filename: "bundle.css",
+      allChunks: true,
+      disable: false
+    }),
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify(env)
     }),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin()
   ]
 };
 
 var dev = {
-  debug: true,
   devtool: "inline-source-map",
   entry: ["react-hot-loader/patch"],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.scss$/,
         exclude: /node_modules/,
-        loaders: [
-          "style-loader?sourceMap",
-          "css-loader?modules&importLoaders=1",
-          "resolve-url-loader",
-          "postcss-loader?syntax=postcss-scss"
+        use: [
+          {
+            loader: "style-loader",
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: "css-loader",
+            options: {
+              modules: true,
+              importLoaders: 1,
+              getLocalIdent: localIdent
+            }
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              syntax: "postcss-scss",
+              plugins: function() {
+                return [require("precss"), require("autoprefixer")];
+              }
+            }
+          }
         ]
       }
     ]
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        debug: true,
+        output: {
+          path: path.resolve(__dirname, "../dist")
+        }
+      }
+    })
+  ],
   devServer: {
     hot: true,
     inline: true,
@@ -93,31 +131,52 @@ var dev = {
       colors: true
     },
     open: true
-  },
-  postcss: function() {
-    return [require("precss"), require("autoprefixer")];
   }
 };
 
 var prd = {
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.scss$/,
         exclude: /node_modules/,
-        loaders: [
+        use: [
           "style-loader",
-          "css-loader?modules&importLoaders=1",
-          "resolve-url-loader",
-          "postcss-loader?syntax=postcss-scss"
+          {
+            loader: "css-loader",
+            options: {
+              modules: true,
+              importLoaders: 1,
+              getLocalIdent: localIdent
+            }
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              syntax: "postcss-scss",
+              plugins: function() {
+                return [
+                  require("precss"),
+                  require("autoprefixer"),
+                  require("cssnano")
+                ];
+              }
+            }
+          }
         ]
       }
     ]
   },
   plugins: [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(true),
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        output: {
+          path: path.resolve(__dirname, "../dist")
+        }
+      }
+    }),
     new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
       compress: {
         warnings: false
       },
@@ -125,10 +184,7 @@ var prd = {
         except: ["module", "exports", "require"]
       }
     })
-  ],
-  postcss: function() {
-    return [require("precss"), require("autoprefixer"), require("cssnano")];
-  }
+  ]
 };
 
 module.exports = {
