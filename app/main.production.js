@@ -33,11 +33,13 @@ app.on("ready", () => {
   mainWindow.webContents.on("context-menu", (e, props) => {
     const { x, y } = props;
 
-    Menu.buildFromTemplate([{
-      label: "Inspect element",
-      click() {
-        mainWindow.inspectElement(x, y);
+    Menu.buildFromTemplate([
+      {
+        label: "Inspect element",
+        click() {
+          mainWindow.inspectElement(x, y);
+        }
       }
-    }]).popup(mainWindow);
+    ]).popup(mainWindow);
   });
 });

@@ -9,20 +9,19 @@ var path = require("path");
 var base = {
   target: "electron-main",
   context: path.join(__dirname, ".."),
-  entry: [
-    "babel-polyfill",
-    "./app/main." + env
-  ],
+  entry: ["babel-polyfill", "./app/main." + env],
   output: {
     path: "dist/",
     filename: "main.js"
   },
   module: {
-    loaders: [{
-      test: /\.js$/,
-      loader: "babel-loader",
-      exclude: /node_modules/
-    }]
+    loaders: [
+      {
+        test: /\.js$/,
+        loader: "babel-loader",
+        exclude: /node_modules/
+      }
+    ]
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -35,8 +34,7 @@ var base = {
   }
 };
 
-var dev = {
-};
+var dev = {};
 
 var prd = {
   plugins: [
@@ -52,8 +50,9 @@ var prd = {
   ]
 };
 
-
-module.exports = validate({
-  development: merge(base, dev),
-  production: merge(base, prd)
-}[env]);
+module.exports = validate(
+  {
+    development: merge(base, dev),
+    production: merge(base, prd)
+  }[env]
+);

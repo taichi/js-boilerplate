@@ -1,8 +1,10 @@
 import { app, BrowserWindow, Menu } from "electron";
 
 import electrondebugger from "electron-debug";
-import installer, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from "electron-devtools-installer";
-
+import installer, {
+  REACT_DEVELOPER_TOOLS,
+  REDUX_DEVTOOLS
+} from "electron-devtools-installer";
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
@@ -11,10 +13,7 @@ app.on("window-all-closed", () => {
 electrondebugger();
 
 app.on("ready", () => {
-  const extensions = [
-    REACT_DEVELOPER_TOOLS,
-    REDUX_DEVTOOLS
-  ];
+  const extensions = [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS];
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
   return Promise.all(extensions.map(ext => installer(ext, forceDownload)))
     .then(names => console.log(`Added Extension:  ${names}`)) // eslint-disable-line
@@ -39,11 +38,13 @@ app.on("ready", () => {
   mainWindow.webContents.on("context-menu", (e, props) => {
     const { x, y } = props;
 
-    Menu.buildFromTemplate([{
-      label: "Inspect element",
-      click() {
-        mainWindow.inspectElement(x, y);
+    Menu.buildFromTemplate([
+      {
+        label: "Inspect element",
+        click() {
+          mainWindow.inspectElement(x, y);
+        }
       }
-    }]).popup(mainWindow);
+    ]).popup(mainWindow);
   });
 });
