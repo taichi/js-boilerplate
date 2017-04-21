@@ -1,7 +1,6 @@
 var env = process.env.NODE_ENV;
 
 var webpack = require("webpack");
-var validate = require("webpack-validator");
 var merge = require("webpack-merge");
 
 var path = require("path");
@@ -11,7 +10,7 @@ var base = {
   context: path.join(__dirname, ".."),
   entry: ["babel-polyfill", "./app/main." + env],
   output: {
-    path: "dist/",
+    path: path.resolve(__dirname, "../dist"),
     filename: "main.js"
   },
   module: {
@@ -38,8 +37,8 @@ var dev = {};
 
 var prd = {
   plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
       compress: {
         warnings: false
       },
@@ -50,9 +49,7 @@ var prd = {
   ]
 };
 
-module.exports = validate(
-  {
-    development: merge(base, dev),
-    production: merge(base, prd)
-  }[env]
-);
+module.exports = {
+  development: merge(base, dev),
+  production: merge(base, prd)
+}[env];

@@ -2,39 +2,43 @@ var env = process.env.NODE_ENV;
 var pkg = require("../package.json");
 
 var webpack = require("webpack");
-var validate = require("webpack-validator");
 var merge = require("webpack-merge");
 
 var path = require("path");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var genericNames = require("generic-names");
+function localIdent(loaderContext, localIdentName, localName) {
+  var fn = genericNames("[hash:base64]", {
+    context: loaderContext
+  });
+  return fn(localName, loaderContext.resourcePath);
+}
 
 var base = {
-  context: path.join(__dirname, ".."),
   entry: [
     "font-awesome/css/font-awesome.css",
     "./src/app.global.css",
     "./src/index." + env
   ],
   output: {
-    path: "dist/",
+    path: path.resolve(__dirname, "../dist"),
     filename: "bundle.js"
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         loader: "babel-loader",
         exclude: /node_modules/
       },
       {
-        test: /\.json$/,
-        loader: "json-loader"
-      },
-      {
         test: /\.css$/,
         include: /node_modules|\.global\./,
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: "css-loader"
+        })
       },
       {
         test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/,
@@ -55,32 +59,63 @@ var base = {
     ]
   },
   resolve: {
-    extensions: ["", ".js", ".jsx"]
+    extensions: [".js", ".jsx"]
   },
   plugins: [
     new HtmlWebpackPlugin({ title: pkg.name }),
-    new ExtractTextPlugin("bundle.css"),
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        context: path.join(__dirname, ".."),
+        output: {
+          path: path.resolve(__dirname, "../dist")
+        }
+      }
+    }),
+    new ExtractTextPlugin({
+      filename: "bundle.css",
+      allChunks: true,
+      disable: false
+    }),
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify(env)
     }),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin()
   ]
 };
 
 var dev = {
-  debug: true,
   devtool: "inline-source-map",
   entry: ["react-hot-loader/patch"],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.scss$/,
         exclude: /node_modules/,
-        loaders: [
-          "style-loader?sourceMap",
-          "css-loader?modules&importLoaders=1",
+        use: [
+          {
+            loader: "style-loader",
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: "css-loader",
+            options: {
+              modules: true,
+              importLoaders: 1,
+              getLocalIdent: localIdent
+            }
+          },
           "resolve-url-loader",
-          "postcss-loader?syntax=postcss-scss"
+          {
+            loader: "postcss-loader",
+            options: {
+              syntax: "postcss-scss",
+              plugins: function() {
+                return [require("precss"), require("autoprefixer")];
+              }
+            }
+          }
         ]
       }
     ]
@@ -92,32 +127,48 @@ var dev = {
     historyApiFallback: true,
     stats: {
       colors: true
-    }
-  },
-  postcss: function() {
-    return [require("precss"), require("autoprefixer")];
+    },
+    open: true
   }
 };
 
 var prd = {
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.scss$/,
         exclude: /node_modules/,
-        loaders: [
+        use: [
           "style-loader",
-          "css-loader?modules&importLoaders=1",
+          {
+            loader: "css-loader",
+            options: {
+              modules: true,
+              importLoaders: 1,
+              getLocalIdent: localIdent
+            }
+          },
           "resolve-url-loader",
-          "postcss-loader?syntax=postcss-scss"
+          {
+            loader: "postcss-loader",
+            options: {
+              syntax: "postcss-scss",
+              plugins: function() {
+                return [
+                  require("precss"),
+                  require("autoprefixer"),
+                  require("cssnano")
+                ];
+              }
+            }
+          }
         ]
       }
     ]
   },
   plugins: [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(true),
     new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
       compress: {
         warnings: false
       },
@@ -125,15 +176,10 @@ var prd = {
         except: ["module", "exports", "require"]
       }
     })
-  ],
-  postcss: function() {
-    return [require("precss"), require("autoprefixer"), require("cssnano")];
-  }
+  ]
 };
 
-module.exports = validate(
-  {
-    development: merge(dev, base),
-    production: merge(base, prd)
-  }[env]
-);
+module.exports = {
+  development: merge(dev, base),
+  production: merge(base, prd)
+}[env];
