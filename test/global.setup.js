@@ -1,5 +1,5 @@
 /* eslint-disable */
-
-global.document = require("jsdom").jsdom("<body></body>");
-global.window = document.defaultView;
+var jsdom = require("jsdom");
+global.window = new jsdom.JSDOM("<body></body>").window;
+global.document = window.document;
 global.navigator = window.navigator;
