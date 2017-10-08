@@ -1,21 +1,27 @@
 // @flow
 import React, { Component } from "react";
 import { Provider } from "react-redux";
-import { Router, hashHistory } from "react-router";
-import { syncHistoryWithStore } from "react-router-redux";
+import { Route } from "react-router-dom";
+import { ConnectedRouter as Router } from "react-router-redux";
 
-import routes from "./routes";
+import HomePage from "./HomePage";
+import CounterPage from "./CounterPage";
 
-class Root extends Component {
+class Root extends Component<Object, void> {
   props: {
-    store: Object
+    store: Object,
+    history: Object
   };
   render() {
-    const { store } = this.props;
-    const history = syncHistoryWithStore(hashHistory, store);
+    const { store, history } = this.props;
     return (
       <Provider store={store}>
-        <Router history={history} routes={routes} />
+        <Router history={history}>
+          <div>
+            <Route exact component={HomePage} />
+            <Route path="/counter" component={CounterPage} />
+          </div>
+        </Router>
       </Provider>
     );
   }
