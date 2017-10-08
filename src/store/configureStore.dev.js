@@ -1,13 +1,12 @@
 // @flow
-import { createStore, applyMiddleware } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { createEpicMiddleware } from "redux-observable";
-import { hashHistory } from "react-router";
-import { routerMiddleware, push } from "react-router-redux";
+import { routerReducer, routerMiddleware, push } from "react-router-redux";
 import { createLogger } from "redux-logger";
 
 import rootEpic from "../epics";
-import rootReducer from "../reducers";
+import reducers from "../reducers";
 
 import * as counterActions from "../actions/counter";
 
@@ -23,17 +22,19 @@ const logger = createLogger({
   collapsed: true
 });
 
-let middlewares = applyMiddleware(
-  epicMiddleware,
-  routerMiddleware(hashHistory),
-  logger
-);
-let composeEnhancers = composeWithDevTools({ actionCreators });
+export default function configureStore(history: Object) {
+  let composeEnhancers = composeWithDevTools({ actionCreators });
+  let middlewares = applyMiddleware(
+    epicMiddleware,
+    routerMiddleware(history),
+    logger
+  );
 
-export default function configureStore(initialState: Object | void) {
   const store = createStore(
-    rootReducer,
-    initialState,
+    combineReducers({
+      ...reducers,
+      router: routerReducer
+    }),
     composeEnhancers(middlewares)
   );
 
