@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import "./Counter.scss";
 import js from "./Counter.json";
 
@@ -14,8 +14,7 @@ export type CounterProps = {
   counter: number
 };
 
-export default class Counter
-  extends React.Component<void, CounterProps, State> {
+export default class Counter extends React.Component<CounterProps, State> {
   state: State;
 
   constructor(props: CounterProps) {
@@ -50,7 +49,9 @@ export default class Counter
           <button styleName="btn" onClick={decrementCounter}>
             <i className="fa fa-minus" />
           </button>
-          <button styleName="btn" onClick={incrementIfOdd}>odd</button>
+          <button styleName="btn" onClick={incrementIfOdd}>
+            odd
+          </button>
           <button styleName="btn" onClick={() => incrementAsync()}>
             async
           </button>

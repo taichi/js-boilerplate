@@ -2,14 +2,25 @@
     "sourceMaps": "inline",
     "presets": [
         "flow",
-        "react-app"
+        "react-app",
+        [
+            "env",
+            {
+                "targets": {
+                    "node": 6
+                },
+                "useBuiltIns": true
+            }
+        ]
     ],
     "plugins": [
         [
             "react-css-modules",
             {
                 "filetypes": {
-                    ".scss": "postcss-scss"
+                    ".scss": {
+                        "syntax": "postcss-scss"
+                    }
                 },
                 "generateScopedName": "[hash:base64]"
             }

@@ -5,9 +5,13 @@ import "ignore-styles";
 import "../global.setup";
 
 import React from "react";
-import { shallow, mount } from "enzyme";
+import { configure, shallow, mount } from "enzyme";
+import { BrowserRouter as Router } from "react-router-dom";
 
 import Home from "components/Home";
+
+import Adapter from "enzyme-adapter-react-16";
+configure({ adapter: new Adapter() });
 
 test("shallow", t => {
   const wrapper = shallow(<Home />);
@@ -15,7 +19,11 @@ test("shallow", t => {
 });
 
 test("mount", t => {
-  const wrapper = mount(<Home />);
+  const wrapper = mount(
+    <Router>
+      <Home />
+    </Router>
+  );
   const fooInner = wrapper.find(".fa-spin");
   t.is(fooInner.is(".fa-spin"), true);
 });
