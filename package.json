@@ -18,13 +18,13 @@
     "postinstall": "flow-typed install"
   },
   "dependencies": {
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
-    "react-router": "^3.0.0",
+    "react-router": "^4.2.0",
     "react-router-redux": "^4.0.7",
     "redux": "^3.7.2",
-    "redux-observable": "^0.15.0",
+    "redux-observable": "^0.16.0",
     "rxjs": "^5.4.3"
   },
   "devDependencies": {
