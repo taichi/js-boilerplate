@@ -1,5 +1,9 @@
 // @flow
 import test from "ava";
+
+import "ignore-styles";
+import "../global.setup";
+
 import React from "react";
 import { configure, shallow, mount } from "enzyme";
 import { BrowserRouter as Router } from "react-router-dom";

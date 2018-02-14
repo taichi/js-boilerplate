@@ -1,7 +1,7 @@
 | [JavaScript](https://github.com/taichi/js-boilerplate/tree/master) | [React](https://github.com/taichi/js-boilerplate/tree/frontend) | [Electron](https://github.com/taichi/js-boilerplate/tree/electron) |
 |------------|-------|----------|
 
-# React Application Boilerplate
+# Electron Application Boilerplate
 
 # Quick Setup
 
@@ -91,3 +91,17 @@ yarn start
   * [Chrome Extension](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi)
 * [Redux DevTools](https://github.com/gaearon/redux-devtools)
   * [Chrome Extension](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd)
+
+# Electron
+
+* [redux-electron-ipc](https://github.com/mariotacke/redux-electron-ipc)
+* [source-map-support](https://github.com/evanw/node-source-map-support)
+
+## Development tools
+* [electron-debug](https://github.com/sindresorhus/electron-debug)
+* [electron-devtools-installer](https://github.com/MarshallOfSound/electron-devtools-installer)
+* [devtron](http://electron.atom.io/devtron/)
+* [spectron](https://github.com/electron/spectron)
+
+## Packaging
+* [electron-builder](https://github.com/electron-userland/electron-builder)

@@ -2,7 +2,16 @@
     "sourceMaps": "inline",
     "presets": [
         "flow",
-        "react-app"
+        "react-app",
+        [
+            "env",
+            {
+                "targets": {
+                    "node": 6
+                },
+                "useBuiltIns": true
+            }
+        ]
     ],
     "plugins": [
         [
@@ -19,7 +28,17 @@
     ],
     "env": {
         "test": {
-            "plugins": []
+            "plugins": [
+                [
+                    "module-resolver",
+                    {
+                        "root": [
+                            "./src",
+                            "./app"
+                        ]
+                    }
+                ]
+            ]
         }
     }
 }

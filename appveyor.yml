@@ -1,3 +1,5 @@
+os: unstable
+
 install:
   - ps: Install-Product node 6.9
   - npm install -g flow-typed
@@ -11,6 +13,7 @@ build_script:
 
 test_script:
   - yarn cover
+  - yarn test:main
 
 artifacts:
   - path: coverage

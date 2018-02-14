@@ -1,0 +1,23 @@
+{
+  "env": {},
+  "plugins": [
+    "ava"
+  ],
+  "extends": [
+    "plugin:ava/recommended"
+  ],
+  "parserOptions": {},
+  "rules": {
+    "ava/no-ignored-test-files": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": [
+          "src",
+          "app"
+        ]
+      }
+    }
+  }
+}

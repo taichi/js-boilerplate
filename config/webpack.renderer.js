@@ -63,6 +63,14 @@ var base = {
   },
   plugins: [
     new HtmlWebpackPlugin({ title: pkg.name }),
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        context: path.join(__dirname, ".."),
+        output: {
+          path: path.resolve(__dirname, "../dist")
+        }
+      }
+    }),
     new ExtractTextPlugin({
       filename: "bundle.css",
       allChunks: true,

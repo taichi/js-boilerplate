@@ -1,23 +1,35 @@
 {
   "name": "js-boilerplate",
   "version": "0.0.1",
-  "description": "react application boilerplate",
+  "description": "Electron application boilerplate",
   "author": "taichi",
   "license": "MIT",
   "homepage": "https://github.com/taichi/js-boilerplate",
   "private": true,
   "scripts": {
     "build": "run-s lint compile test",
-    "clear": "rimraf dist coverage .nyc_output",
+    "clear": "rimraf dist release coverage .nyc_output",
     "lint": "eslint src/ test/",
-    "compile": "cross-env NODE_ENV=production webpack --progress --profile --config config/webpack.js",
-    "test": "cross-env NODE_ENV=test NODE_PATH=src ava --verbose",
-    "cover": "nyc --reporter=html --reporter=text yarn test",
-    "start": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.js",
-    "watch": "chokidar test/**/*.js -c \"cross-env NODE_ENV=test NODE_PATH=src ava --tap {path} | tap-notify\"",
+    "compile": "run-p compile:*",
+    "compile:main": "cross-env NODE_ENV=production webpack --profile --config config/webpack.main.js",
+    "compile:renderer": "cross-env NODE_ENV=production webpack --profile --config config/webpack.renderer.js",
+    "run:main": "cross-env NODE_ENV=production electron dist/main.js",
+    "package": "yarn compile && build --dir",
+    "package:win": "yarn build && build --win --x64",
+    "package:linux": "yarn build && build --linux",
+    "package:mac": "yarn build && build --mac",
+    "test": "run-s test:renderer test:main",
+    "test:main": "cross-env NODE_ENV=test ava app-test/**/*.test.js -S {app,src}/**/*.{js,jsx} --verbose",
+    "test:renderer": "cross-env NODE_ENV=test ava --verbose",
+    "cover": "nyc --reporter=html --reporter=text yarn test:renderer",
+    "start": "run-p start:*",
+    "start:main": "cross-env NODE_ENV=development electron -r babel-register -r babel-polyfill ./app/main.development",
+    "start:renderer": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.renderer.js",
+    "watch": "chokidar test/**/*.js -c \"cross-env NODE_ENV=test ava --tap {path} | tap-notify\"",
     "postinstall": "flow-typed install"
   },
   "dependencies": {
+    "babel-polyfill": "^6.20.0",
     "history": "^4.7.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
@@ -26,8 +38,10 @@
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.6",
     "redux": "^3.7.2",
+    "redux-electron-ipc": "^1.1.6",
     "redux-observable": "^0.16.0",
-    "rxjs": "^5.4.3"
+    "rxjs": "^5.4.3",
+    "source-map-support": "^0.5.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.5",
@@ -36,17 +50,22 @@
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",
     "babel-loader": "^7.1.2",
+    "babel-plugin-module-resolver": "^2.7.1",
     "babel-plugin-react-css-modules": "^3.3.1",
     "babel-preset-env": "^1.6.0",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-react-app": "^3.0.3",
-    "babel-preset-react-optimize": "^1.0.1",
     "babel-register": "^6.18.0",
     "chokidar-cli": "^1.2.0",
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.0",
     "css-module-flow": "^1.0.0",
     "cssnano": "^3.9.1",
+    "devtron": "^1.4.0",
+    "electron": "^1.4.15",
+    "electron-builder": "^19.35.0",
+    "electron-debug": "^1.1.0",
+    "electron-devtools-installer": "^2.0.1",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.1",
     "eslint": "^4.8.0",
@@ -67,7 +86,6 @@
     "html-webpack-plugin": "^2.24.1",
     "ignore-styles": "^5.0.1",
     "jsdom": "^11.1.0",
-    "json-loader": "^0.5.4",
     "npm-run-all": "^4.1.1",
     "nyc": "^11.2.1",
     "postcss": "^6.0.13",
@@ -81,6 +99,7 @@
     "redux-logger": "^3.0.1",
     "resolve-url-loader": "^2.0.2",
     "rimraf": "^2.6.2",
+    "spectron": "^3.4.1",
     "style-loader": "^0.19.0",
     "tap-notify": "^1.0.0",
     "testdouble": "^3.2.4",
@@ -89,15 +108,41 @@
     "webpack-dev-server": "^2.4.2",
     "webpack-merge": "^4.1.0"
   },
+  "main": "dist/main.js",
+  "build": {
+    "appId": "awesome.app",
+    "productName": "MyAwesomeApp",
+    "mac": {
+      "category": "your.app.category.type"
+    },
+    "win": {
+      "iconUrl": "(windows-only) https link to icon",
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "AppImage",
+        "tar.gz"
+      ]
+    },
+    "directories": {
+      "buildResources": "build",
+      "output": "release"
+    },
+    "files": [
+      "dist/",
+      "package.json"
+    ]
+  },
   "ava": {
     "files": "test/**/*.test.js",
-    "source": "src/**/*.{js,jsx}",
+    "source": "{app,src}/**/*.{js,jsx}",
     "babel": "inherit",
-    "require": [
-      "babel-register",
-      "ignore-styles",
-      "./test/global.setup.js"
-    ]
+    "require": "babel-register"
   },
   "repository": {
     "type": "git",
