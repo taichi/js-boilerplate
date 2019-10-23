@@ -21,9 +21,4 @@ jobs:
           paths:
             - ~/.cache/yarn
             - ~/.flow-typed
-      - run:
-          name: upgrade and make PR
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" -a -n "${YARN_UPGRADE}" ]; then
-              ci-yarn-upgrade --execute --verbose;
-            fi
+      
